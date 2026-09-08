@@ -31,13 +31,6 @@ t("div",{class:"item",style:{backgroundColor:"#eff5ff"},onClick:y},[Y(fa,{color:
 ```less
 {icon:"appStore",title:n("\u5E94\u7528\u5546\u5E97"),subtitle:n("\u767E\u6B3E\u5E94\u7528\uFF0C\u81EA\u7531\u9009\u62E9"),status:"",color:"orange",alink:"/cgi-bin/luci/admin/store/pages/store"}
 ```
-```javascript
-https://www.istoreos.com/
-```
-修改为：
-```javascript
-https://github.com/huajiaoshu520/X86-daed/releases/latest
-```
 ---
 
 ### ③ iStoreOS 官网
