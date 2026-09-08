@@ -54,6 +54,22 @@ jobs:
                   'style:{"text-decoration":"none",color:"white","line-height":"1.5em"}}',
                   'style:{"text-decoration":"none",color:"white","line-height":"1.5em","transform": "translateY(-42px)"}}',
               ),
+              (
+                  'quickActions:!0',
+                  'quickActions:!1',
+              ),      
+              (
+                  'storage:!0',
+                  'storage:!1',
+              ),
+              (
+                  'downloadService:!0',
+                  'downloadService:!1',
+              ), 
+              (
+                  'remoteDomain:!0',
+                  'remoteDomain:!1',
+              ),                  
           ]
 
           for old, new in replacements:
