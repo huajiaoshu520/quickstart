@@ -6,9 +6,6 @@ on:
     # 每天北京时间 03:00 运行
     - cron: "0 19 * * *"
 
-permissions:
-  contents: write
-
 jobs:
   sync:
     runs-on: ubuntu-latest
