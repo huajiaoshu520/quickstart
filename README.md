@@ -71,12 +71,12 @@ class:"model_btn",style:{transform:"translateY(-40px)"}
 ```
 
 ```javascript
-style:{"text-decoration":"none",color:"white","line-height":"1.5em"
+style:{"text-decoration":"none",color:"white","line-height":"1.5em"}}
 ```
 修改为：
 
 ```javascript
-style:{"text-decoration":"none",color:"white","line-height":"1.5em","transform": "translateY(-42px)"
+style:{"text-decoration":"none",color:"white","line-height":"1.5em","transform": "translateY(-42px)"}}
 ```
 > 用于将对应模块整体向上移动 `40px`。
 
