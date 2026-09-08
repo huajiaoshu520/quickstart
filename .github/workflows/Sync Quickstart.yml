@@ -1,0 +1,71 @@
+name: Sync Quickstart
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 每天北京时间 03:00 运行
+    - cron: "0 19 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Clone upstream repositories
+        run: |
+          git clone --depth 1 --branch main \
+            https://github.com/linkease/nas-packages-luci.git \
+            /tmp/nas-packages-luci
+
+          git clone --depth 1 --branch master \
+            https://github.com/linkease/nas-packages.git \
+            /tmp/nas-packages
+
+      - name: Sync luci-app-quickstart
+        run: |
+          rm -rf luci-app-quickstart
+          mkdir -p luci-app-quickstart
+
+          cp -a \
+            /tmp/nas-packages-luci/luci/luci-app-quickstart/. \
+            luci-app-quickstart/
+
+      - name: Sync quickstart
+        run: |
+          rm -rf quickstart
+          mkdir -p quickstart
+
+          cp -a \
+            /tmp/nas-packages/network/services/quickstart/. \
+            quickstart/
+
+      - name: Show changes
+        run: |
+          git status
+          git diff --stat
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet; then
+            echo "No changes to sync."
+            exit 0
+          fi
+
+          git add luci-app-quickstart quickstart
+
+          git commit -m "sync: update quickstart from upstream"
+
+          git push origin main
