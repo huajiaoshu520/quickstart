@@ -1,0 +1,92 @@
+name: Modify Quickstart
+
+on:
+  workflow_dispatch:
+
+jobs:
+  modify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Modify index.js
+        shell: python
+        run: |
+          from pathlib import Path
+
+          file = Path(
+              "luci-app-quickstart/htdocs/luci-static/quickstart/index.js"
+          )
+
+          content = file.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  "/cgi-bin/luci/admin/store/pages/maintance",
+                  "/cgi-bin/luci/admin/system/flash",
+              ),
+              (
+                  "iStoreOS官网",
+                  "官网",
+              ),
+              (
+                  "https://www.istoreos.com/",
+                  "https://github.com/huajiaoshu520/X86-daed/releases/latest",
+              ),
+              (
+                  'class:"model_btn"',
+                  'class:"model_btn",style:{transform:"translateY(-40px)"}',
+              ),
+              (
+                  'style:{"text-decoration":"none",color:"white","line-height":"1.5em"',
+                  'style:{"text-decoration":"none",color:"white","line-height":"1.5em","transform": "translateY(-42px)"',
+              ),
+          ]
+
+          for old, new in replacements:
+              if old not in content:
+                  print(f"WARNING: 未找到目标内容: {old}")
+              else:
+                  content = content.replace(old, new)
+
+          # 删除应用商店对象项
+          app_store = (
+              '{icon:"appStore",title:n("应用商店"),'
+              'subtitle:n("百款应用，自由选择"),status:"",'
+              'color:"orange",'
+              'alink:"/cgi-bin/luci/admin/store/pages/store"}'
+          )
+
+          if app_store in content:
+              content = content.replace(app_store, "")
+              print("已删除应用商店项目")
+          else:
+              print("WARNING: 未找到应用商店项目")
+
+          file.write_text(content, encoding="utf-8")
+
+      - name: Show diff
+        run: |
+          git diff -- luci-app-quickstart/htdocs/luci-static/quickstart/index.js
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet; then
+            echo "没有检测到任何修改，不需要提交。"
+            exit 0
+          fi
+
+          git add luci-app-quickstart/htdocs/luci-static/quickstart/index.js
+
+          git commit -m "fix: update quickstart links and layout"
+
+          git push origin main
