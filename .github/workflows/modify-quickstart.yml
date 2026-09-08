@@ -35,8 +35,8 @@ jobs:
                   "/cgi-bin/luci/admin/system/flash",
               ),
               (
-                  "iStoreOS\u5B98\u7F51",
-                  "\u5B98\u7F51",
+                  '"iStoreOS\u5B98\u7F51"',
+                  '"\u5B98\u7F51"',
               ),
               (
                   "https://www.istoreos.com/",
