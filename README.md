@@ -13,7 +13,15 @@ luci-app-quickstart/htdocs/luci-static/quickstart/index.js
 ```php
 t("div",{class:"item",style:{backgroundColor:"#eff5ff"},onClick:y},[Y(fa,{color:"#553afe",class:"icon"}),t("span",null,i(e(n)("\u7CFB\u7EDF\u7EF4\u62A4")),1)])
 ```
+将：
 
+```javascript
+/cgi-bin/luci/admin/store/pages/maintance
+```
+修改为：
+```javascript
+/cgi-bin/luci/admin/system/flash
+```
 ---
 
 ### ② 应用商店
@@ -23,7 +31,13 @@ t("div",{class:"item",style:{backgroundColor:"#eff5ff"},onClick:y},[Y(fa,{color:
 ```less
 {icon:"appStore",title:n("\u5E94\u7528\u5546\u5E97"),subtitle:n("\u767E\u6B3E\u5E94\u7528\uFF0C\u81EA\u7531\u9009\u62E9"),status:"",color:"orange",alink:"/cgi-bin/luci/admin/store/pages/store"}
 ```
-
+```javascript
+https://www.istoreos.com/
+```
+修改为：
+```javascript
+https://github.com/huajiaoshu520/X86-daed/releases/latest
+```
 ---
 
 ### ③ iStoreOS 官网
@@ -34,6 +48,21 @@ t("div",{class:"item",style:{backgroundColor:"#eff5ff"},onClick:y},[Y(fa,{color:
 t("a",Xb,i(e(n)("iStoreOS\u5B98\u7F51")),1)
 ```
 
+```javascript
+iStoreOS\u5B98\u7F51
+```
+修改为：
+```javascript
+\u5B98\u7F51
+```
+
+```javascript
+https://www.istoreos.com/
+```
+修改为：
+```javascript
+https://github.com/huajiaoshu520/X86-daed/releases/latest
+```
 ---
 
 ### ④ 调整模块位置
@@ -43,13 +72,19 @@ t("a",Xb,i(e(n)("iStoreOS\u5B98\u7F51")),1)
 ```javascript
 class:"model_btn"
 ```
-
 修改为：
-
 ```javascript
 class:"model_btn",style:{transform:"translateY(-40px)"}
 ```
 
+```javascript
+style:{"text-decoration":"none",color:"white","line-height":"1.5em"
+```
+修改为：
+
+```javascript
+style:{"text-decoration":"none",color:"white","line-height":"1.5em","transform": "translateY(-42px)"
+```
 > 用于将对应模块整体向上移动 `40px`。
 
 ---
