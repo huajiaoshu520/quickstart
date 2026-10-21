@@ -5,7 +5,7 @@ on:
   schedule:
     # 每天北京时间 03:00 运行
     # GitHub Actions 使用 UTC
-    - cron: "0 19 * * *"
+    - cron: "0 20 * * *"
 
 jobs:
   sync:
