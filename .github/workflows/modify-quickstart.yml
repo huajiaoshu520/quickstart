@@ -54,7 +54,7 @@ jobs:
               ('remoteDomain:!0', 'remoteDomain:!1'),
           ]
           for old, new in replacements:
-              if new in content:
+              if new in content and (old in new or old not in content):
                   continue
               if old not in content:
                   print(f"WARNING: 未找到目标内容: {old}")
