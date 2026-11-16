@@ -112,6 +112,9 @@ jobs:
           replace('R(()=>Un.filter(M=>!qe.value.includes(M.id)))', 'R(()=>Un.filter(M=>!hiddenHomeWidgets.has(M.id)&&!qe.value.includes(M.id)))')
 
 
+          toolbar = 'Ew={class:"home-top","data-home-top":"",style:{marginTop:"-16px"}}'
+          replace(toolbar if toolbar in app else 'Ew={class:"home-top","data-home-top":""}', 'Ew={class:"home-top","data-home-top":"",style:{marginTop:"-56px"}}')
+
           # Use the website destination configured in the supplied workflow.
           website = "https://github.com/huajiaoshu520/X86-daed/releases/latest"
           site_anchor = 'Dw={href:'
