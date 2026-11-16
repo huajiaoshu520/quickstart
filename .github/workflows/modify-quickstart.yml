@@ -25,7 +25,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Modify index.js
+      - name: Modify Quickstart dashboard
         shell: python
         run: |
           from pathlib import Path
@@ -40,45 +40,65 @@ jobs:
               "", content, count=1
           )
 
-          replacements = [
-              ("/cgi-bin/luci/admin/store/pages/maintance", "/cgi-bin/luci/admin/system/flash?online_update=1"),
-              (r"iStoreOS\u5B98\u7F51", r"\u5B98\u7F51"),
-              ("iStoreOS官网", "官网"),
-              ("https://www.istoreos.com/", "https://github.com/longdongqiang-jason/X86-daed/releases/latest"),
-              ('class:"model_btn"', 'class:"model_btn",style:{transform:"translateY(-40px)"}'),
-              ('style:{"text-decoration":"none",color:"white","line-height":"1.5em"}}',
-               'style:{"text-decoration":"none",color:"white","line-height":"1.5em","transform": "translateY(-42px)"}}'),
-              ('quickActions:!0', 'quickActions:!1'),
-              ('storage:!0', 'storage:!1'),
-              ('downloadService:!0', 'downloadService:!1'),
-              ('remoteDomain:!0', 'remoteDomain:!1'),
-          ]
-          for old, new in replacements:
-              if new in content and (old in new or old not in content):
-                  continue
-              if old not in content:
-                  print(f"WARNING: 未找到目标内容: {old}")
-              else:
-                  content = content.replace(old, new)
+          app = file.with_name("app.js")
+          app_import = re.search(r'["\']\./app\.js(?:\?[^"\']*)?["\']', content)
+          if app_import:
+              app_content = app.read_text(encoding="utf-8")
+              edits = [
+                  ("if(be.kind===\"tool\"){Te&&ut.updateNetworkStatus", "if(be.kind===\"tool\"){if(be.id===\"tool-maintenance\"){window.openX86OnlineUpdate();return}Te&&ut.updateNetworkStatus"),
+                  ("\"/cgi-bin/luci/admin/system/flash\"", "\"/cgi-bin/luci/admin/system/flash?online_update=1\""),
+                  ("https://www.istoreos.com/", "https://github.com/longdongqiang-jason/X86-daed/releases/latest"),
+                  ("r(\"iStoreOS官网\",\"iStoreOS website\")", "r(\"官网\",\"Website\")"),
+                  (",e(\"button\",{class:\"software-center\",onClick:Te[12]||(Te[12]=ie=>dn(\"/cgi-bin/luci/admin/store/pages/store\")),\"data-browser-software-center\":\"\"},[ue(a(w(\"软件中心\",\"Software center\")),1),G(Qe,{name:\"arrow\"})])", ""),
+                  ("{id:\"storage\",template:\"pair\",height:330,heightMode:\"content\",columns:[{weight:50,split:50,cards:[\"storage\"]},{weight:50,split:50,cards:[\"sharing\"]}]}", "{id:\"storage\",template:\"single\",height:330,heightMode:\"content\",columns:[{weight:100,split:50,cards:[\"sharing\"]}]}"),
+                  ("{id:\"services\",template:\"triple\",height:280,heightMode:\"content\",columns:[{weight:34,split:50,cards:[\"docker\"]},{weight:33,split:50,cards:[\"downloads\"]},{weight:33,split:50,cards:[\"remote\"]}]}", "{id:\"services\",template:\"single\",height:280,heightMode:\"content\",columns:[{weight:100,split:50,cards:[\"docker\"]}]}"),
+              ]
+              for old, new in edits:
+                  if old in app_content:
+                      app_content = app_content.replace(old, new)
+                  elif new and new not in app_content:
+                      raise SystemExit(f"新版 app.js 缺少预期入口：{old}")
+              if "window.openX86OnlineUpdate();" not in app_content:
+                  raise SystemExit("未找到新版系统维护入口")
+          else:
+              replacements = [
+                  ("/cgi-bin/luci/admin/store/pages/maintance", "/cgi-bin/luci/admin/system/flash?online_update=1"),
+                  (r"iStoreOS\u5B98\u7F51", r"\u5B98\u7F51"),
+                  ("iStoreOS官网", "官网"),
+                  ("https://www.istoreos.com/", "https://github.com/longdongqiang-jason/X86-daed/releases/latest"),
+                  ('class:"model_btn"', 'class:"model_btn",style:{transform:"translateY(-40px)"}'),
+                  ('style:{"text-decoration":"none",color:"white","line-height":"1.5em"}}',
+                   'style:{"text-decoration":"none",color:"white","line-height":"1.5em","transform": "translateY(-42px)"}}'),
+                  ('quickActions:!0', 'quickActions:!1'),
+                  ('storage:!0', 'storage:!1'),
+                  ('downloadService:!0', 'downloadService:!1'),
+                  ('remoteDomain:!0', 'remoteDomain:!1'),
+              ]
+              for old, new in replacements:
+                  if new in content and (old in new or old not in content):
+                      continue
+                  if old not in content:
+                      print(f"WARNING: 未找到目标内容: {old}")
+                  else:
+                      content = content.replace(old, new)
 
-          # Upgrade plain flash links without duplicating query parameters.
-          content = re.sub(
-              r"(/cgi-bin/luci/admin/system/flash)(?=[\"'])",
-              r"\1?online_update=1", content
-          )
-          # Turn maintenance navigation callbacks into dashboard popup calls.
-          content, count = re.subn(
-              r"window\.location\.href\s*=\s*[\"']/cgi-bin/luci/admin/system/flash\?online_update=1[\"']",
-              "window.openX86OnlineUpdate()", content
-          )
-          if not count and "window.openX86OnlineUpdate()" not in content:
-              raise SystemExit("未找到系统维护点击回调，停止修改，请检查新版首页结构")
+              # Upgrade plain flash links without duplicating query parameters.
+              content = re.sub(
+                  r"(/cgi-bin/luci/admin/system/flash)(?=[\"'])",
+                  r"\1?online_update=1", content
+              )
+              # Turn maintenance navigation callbacks into dashboard popup calls.
+              content, count = re.subn(
+                  r"window\.location\.href\s*=\s*[\"']/cgi-bin/luci/admin/system/flash\?online_update=1[\"']",
+                  "window.openX86OnlineUpdate()", content
+              )
+              if not count and "window.openX86OnlineUpdate()" not in content:
+                  raise SystemExit("未找到系统维护点击回调，停止修改，请检查新版首页结构")
 
-          app_store = r''',{icon:"appStore",title:n("\u5E94\u7528\u5546\u5E97"),subtitle:n("\u767E\u6B3E\u5E94\u7528\uFF0C\u81EA\u7531\u9009\u62E9"),status:"",color:"orange",alink:"/cgi-bin/luci/admin/store/pages/store"}'''
-          if app_store in content:
-              content = content.replace(app_store, "")
-              print("已删除应用商店项目")
-
+              app_store = r''',{icon:"appStore",title:n("\u5E94\u7528\u5546\u5E97"),subtitle:n("\u767E\u6B3E\u5E94\u7528\uFF0C\u81EA\u7531\u9009\u62E9"),status:"",color:"orange",alink:"/cgi-bin/luci/admin/store/pages/store"}'''
+              if app_store in content:
+                  content = content.replace(app_store, "")
+                  print("已删除应用商店项目")
           HELPER = r'''/* quickstart-online-modal-v4: preserve the dashboard and reuse native flash flow. */
           (function () {
               var active = null;
@@ -190,6 +210,13 @@ jobs:
                   }
               }, true);
           })();'''
+          if app_import:
+              app.write_text(app_content, encoding="utf-8")
+              old_import = app_import.group()
+              if "x86_online_modal=1" not in old_import:
+                  separator = "&" if "?" in old_import else "?"
+                  new_import = old_import[:-1] + separator + "x86_online_modal=1" + old_import[-1]
+                  content = content.replace(old_import, new_import, 1)
           content = HELPER + "\n" + content
           file.write_text(content, encoding="utf-8")
           print("已接入首页弹窗：防闪、隐藏升级页背景、即时关闭")
@@ -203,11 +230,14 @@ jobs:
           file.write_text(content.replace("+luci-app-store", ""), encoding="utf-8")
 
       - name: Show changes
-        run: git diff --stat -- luci-app-quickstart/htdocs/luci-static/quickstart/index.js luci-app-quickstart/Makefile
+        run: git diff --stat -- luci-app-quickstart/htdocs/luci-static/quickstart/index.js luci-app-quickstart/htdocs/luci-static/quickstart/app.js luci-app-quickstart/Makefile
 
       - name: Commit and push
         run: |
           git add luci-app-quickstart/htdocs/luci-static/quickstart/index.js luci-app-quickstart/Makefile
+          if [ -f luci-app-quickstart/htdocs/luci-static/quickstart/app.js ]; then
+            git add luci-app-quickstart/htdocs/luci-static/quickstart/app.js
+          fi
           if git diff --cached --quiet; then
             echo "没有修改，不需要提交。"
             exit 0
