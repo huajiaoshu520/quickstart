@@ -47,7 +47,7 @@ jobs:
               edits = [
                   ("if(be.kind===\"tool\"){Te&&ut.updateNetworkStatus", "if(be.kind===\"tool\"){if(be.id===\"tool-maintenance\"){window.openX86OnlineUpdate();return}Te&&ut.updateNetworkStatus"),
                   ("\"/cgi-bin/luci/admin/system/flash\"", "\"/cgi-bin/luci/admin/system/flash?online_update=1\""),
-                  ("https://www.istoreos.com/", "https://github.com/longdongqiang-jason/X86-daed/releases/latest"),
+                  ("https://www.istoreos.com/", "https://github.com/huajiaoshu520/X86-daed/releases/latest"),
                   ("r(\"iStoreOS官网\",\"iStoreOS website\")", "r(\"官网\",\"Website\")"),
                   (",e(\"button\",{class:\"software-center\",onClick:Te[12]||(Te[12]=ie=>dn(\"/cgi-bin/luci/admin/store/pages/store\")),\"data-browser-software-center\":\"\"},[ue(a(w(\"软件中心\",\"Software center\")),1),G(Qe,{name:\"arrow\"})])", ""),
                   ("{id:\"storage\",template:\"pair\",height:330,heightMode:\"content\",columns:[{weight:50,split:50,cards:[\"storage\"]},{weight:50,split:50,cards:[\"sharing\"]}]}", "{id:\"storage\",template:\"single\",height:330,heightMode:\"content\",columns:[{weight:100,split:50,cards:[\"sharing\"]}]}"),
@@ -65,7 +65,7 @@ jobs:
                   ("/cgi-bin/luci/admin/store/pages/maintance", "/cgi-bin/luci/admin/system/flash?online_update=1"),
                   (r"iStoreOS\u5B98\u7F51", r"\u5B98\u7F51"),
                   ("iStoreOS官网", "官网"),
-                  ("https://www.istoreos.com/", "https://github.com/longdongqiang-jason/X86-daed/releases/latest"),
+                  ("https://www.istoreos.com/", "https://github.com/huajiaoshu520/X86-daed/releases/latest"),
                   ('class:"model_btn"', 'class:"model_btn",style:{transform:"translateY(-40px)"}'),
                   ('style:{"text-decoration":"none",color:"white","line-height":"1.5em"}}',
                    'style:{"text-decoration":"none",color:"white","line-height":"1.5em","transform": "translateY(-42px)"}}'),
